@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { treeTable, TreeRowWrapper, sizeCalculator, collapseBuilder } from '../../components/src/Components/TreeTable';
+// import { ReactCharts} from '@patternfly/patternfly';
+import { ChartPie } from '@patternfly/react-charts/dist/js/components/ChartPie';
+// import{ChartPie} from '@patternfly/react-charts';
+import {Chart} from '../../pdf-generator/src/components/Chart';
+import {Battery} from '../../pdf-generator/src/components/Battery';
+import {Section} from '../../pdf-generator/src/components/Section';
+import {Column} from '../../pdf-generator/src/components/Column';
+import {Panel} from '../../pdf-generator/src/components/Panel';
+import {PanelItem} from '../../pdf-generator/src/components/PanelItem';
+// import Section from '../../pdf-generator/src/components/Section'
 import './index.scss';
 import {
     Table,
@@ -9,56 +19,15 @@ import {
     textCenter
 } from '@patternfly/react-table';
 
-const origRows = [
-    {
-        cells: [ 'one', 'two', 'three', 'four', 'five' ],
-        isTreeOpen: true
-    },
-    {
-        cells: [
-            {
-                title: <div>one - 2</div>,
-                props: { title: 'hover title', colSpan: 3 }
-            },
-            'four - 2',
-            'five - 2'
-        ],
-        isTreeOpen: false,
-        treeParent: 0
-    },
-    {
-        cells: [
-            'one - 3',
-            'two - 3',
-            'three - 3',
-            'four - 3',
-            {
-                title: 'five - 3 (not centered)',
-                props: { textCenter: false }
-            }
-        ],
-        treeParent: 1
-    },
-    {
-        cells: [ 'one', 'two', 'three', 'four', 'five' ]
-    }
-];
+
+
+const testMessage = {
+    id: 'test',
+    description:'Testing',
+    defaultMessage:'ChartTesting'
+}
 
 class MyCmp extends Component {
-    state = {
-        cells: [
-            { title: 'Repositories', cellTransforms: [ treeTable((...props) => this.collapseRows(...props)) ] },
-            'Branches',
-            { title: 'Pull requests' },
-            'Workspaces',
-            {
-                title: 'Last Commit',
-                transforms: [ textCenter ],
-                cellTransforms: [ textCenter ]
-            }
-        ],
-        rows: origRows
-    }
 
     collapseRows = (...props) => {
         const { rows } = this.state;
@@ -68,18 +37,34 @@ class MyCmp extends Component {
     }
 
     render() {
-        const { cells, rows } = this.state;
+
+        console.log('We can still present a data table: ', testMessage);
         return (
-            <Table
-                className="pf-m-expandable pf-c-treeview"
-                rowWrapper={TreeRowWrapper}
-                aria-label="Simple Table"
-                cells={cells}
-                rows={sizeCalculator(rows)}
-            >
-                <TableHeader />
-                <TableBody />
-            </Table>
+            <div style={{height: '275px', width: '350px'}}>
+                <h1>This is my render</h1>
+                    <ChartPie
+                        ariaDesc="Testing of labels on a Victory Pie Chart for the frontend advisor application"
+                        ariaTitle="Pie chart example"
+                        constrainToVisibleArea={true}
+                        data={[
+                            {x: testMessage.defaultMessage, y: 20},
+                            {x: testMessage.defaultMessage, y: 20},
+                            {x: testMessage.defaultMessage, y: 20},
+                            {x: testMessage.defaultMessage, y: 40}
+                        ]}
+                        labels={({datum})=> `${datum.x} : ${datum.y}`}
+                        legendData={[{ name: 'Cats: 35' }, { name: 'Dogs: 55' }, { name: 'Birds: 10' }]}
+                        legendPosition="bottom"
+                        padding={{
+                            bottom: 65,
+                            left: 20,
+                            right: 20,
+                            top: 20
+                        }}
+                        height={275}
+                        width={350}
+                />
+            </div>
         );
     }
 }
